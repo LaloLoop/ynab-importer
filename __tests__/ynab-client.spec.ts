@@ -5,17 +5,14 @@ import {importBudgets} from '../src/ynab-importer';
 
 import * as mockBudgetsResp from '../__fixtures__/budgets.json';
 
+const mockClient = {
+    budgets: {
+        getBudgets: jest.fn().mockImplementation(() => Promise.resolve(mockBudgetsResp))
+    }
+}
 jest.mock('ynab', () => {
     return {
-        API: jest.fn().mockReturnValue({
-            budgets: {
-                getBudgets: async () => {
-                    return Promise.resolve(
-                        mockBudgetsResp
-                    )
-                }
-            }
-        })
+        API: jest.fn().mockImplementation(() => mockClient)
     }
 })
 const mockedYnab = jest.mocked(ynab)
@@ -41,5 +38,6 @@ describe('ynab client', () => {
         await importBudgets()
 
         expect(mockedYnab.API).toHaveBeenCalledWith('some-token')
+        expect(mockClient.budgets.getBudgets).toHaveBeenCalled()
     })
 })
