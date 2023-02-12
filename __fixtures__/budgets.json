@@ -1,0 +1,47 @@
+{
+    "data": {
+        "budgets": [
+            {
+                "id": "6e04fa44-437c-486f-8cb3-2a368d3862a5",
+                "name": "México",
+                "last_modified_on": "2023-02-10T02:36:24+00:00",
+                "first_month": "2017-11-01",
+                "last_month": "2023-09-01",
+                "date_format": {
+                    "format": "DD/MM/YYYY"
+                },
+                "currency_format": {
+                    "iso_code": "MXN",
+                    "example_format": "123,456.78",
+                    "decimal_digits": 2,
+                    "decimal_separator": ".",
+                    "symbol_first": true,
+                    "group_separator": ",",
+                    "currency_symbol": "$",
+                    "display_symbol": true
+                }
+            },
+            {
+                "id": "1b46af13-6a87-4b5c-8bd7-db8997587031",
+                "name": "Canada",
+                "last_modified_on": "2023-02-10T05:53:01+00:00",
+                "first_month": "2020-12-01",
+                "last_month": "2023-02-01",
+                "date_format": {
+                    "format": "DD/MM/YYYY"
+                },
+                "currency_format": {
+                    "iso_code": "CAD",
+                    "example_format": "123,456.78",
+                    "decimal_digits": 2,
+                    "decimal_separator": ".",
+                    "symbol_first": true,
+                    "group_separator": ",",
+                    "currency_symbol": "$",
+                    "display_symbol": true
+                }
+            }
+        ],
+        "default_budget": null
+    }
+}
