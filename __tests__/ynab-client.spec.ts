@@ -5,14 +5,9 @@ import {importBudgets} from '../src/ynab-importer';
 
 import * as mockBudgetsResp from '../__fixtures__/budgets.json';
 
-const mockClient = {
-    budgets: {
-        getBudgets: jest.fn().mockImplementation(() => Promise.resolve(mockBudgetsResp))
-    }
-}
 jest.mock('ynab', () => {
     return {
-        API: jest.fn().mockImplementation(() => mockClient)
+        API: jest.fn()
     }
 })
 const mockedYnab = jest.mocked(ynab)
@@ -25,6 +20,7 @@ describe('ynab client', () => {
     beforeEach(() => {
         jest.resetModules()
         process.env = {...env}
+        mockedYnab.API.mockClear()
     })
 
     afterEach(() => {
@@ -32,6 +28,14 @@ describe('ynab client', () => {
     })
 
     test('gets budgets', async () => {
+
+        const mockClient = {
+            budgets: {
+                getBudgets: jest.fn().mockImplementation(() => Promise.resolve(mockBudgetsResp))
+            }
+        } as unknown as jest.Mocked<ynab.api>
+
+        mockedYnab.API.mockReturnValue(mockClient)
 
         process.env.ACCESS_TOKEN = 'some-token'
 
