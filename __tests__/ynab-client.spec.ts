@@ -1,15 +1,11 @@
 import { jest, describe, test, expect, afterEach, beforeEach } from '@jest/globals';
-import ynab from 'ynab';
+import * as ynab from 'ynab';
 
-import {importBudgets} from '../src/ynab-importer';
+import {getBudgets} from '../src/ynab-client';
 
 import * as mockBudgetsResp from '../__fixtures__/budgets.json';
 
-jest.mock('ynab', () => {
-    return {
-        API: jest.fn()
-    }
-})
+jest.mock('ynab')
 const mockedYnab = jest.mocked(ynab)
 
 
@@ -39,9 +35,14 @@ describe('ynab client', () => {
 
         process.env.ACCESS_TOKEN = 'some-token'
 
-        await importBudgets()
+        const budgetsResp = await getBudgets()
+        const budgets = budgetsResp.data.budgets
 
         expect(mockedYnab.API).toHaveBeenCalledWith('some-token')
         expect(mockClient.budgets.getBudgets).toHaveBeenCalled()
+
+        expect(budgets.length).toEqual(2);
+        expect(budgets[0].name).toEqual('México');
+        expect(budgets[1].name).toEqual('Canada');
     })
 })

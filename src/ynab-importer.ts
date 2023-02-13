@@ -1,17 +1,22 @@
 import * as ynab from 'ynab';
 
-export const importBudgets = async () => {
-    const accessToken = process.env.ACCESS_TOKEN;
+import { PrismaClient } from '@prisma/client';
 
-    if (!accessToken) {
-        throw Error('Missing access token, please set the ACCESS_TOKEN env var');
-    }
+export const importBudgets = async (budgetsResp: ynab.BudgetSummaryResponse) =>{
+    const prismaClient = new PrismaClient()
 
-    const ynabAPI = new ynab.API(accessToken);
-    const budgetsResponse = await ynabAPI.budgets.getBudgets();
-    const budgets = budgetsResponse.data.budgets;
+    const createdBudgets = []
+    for (let budget of budgetsResp.data.budgets) {
 
-    for (let budget of budgets) {
-        console.log(`Budget Name: ${budget.name}`);
+        const createdBudget = prismaClient.budget.create({
+            data: {
+                id: budget.id,
+                name: budget.name,
+                first_month: budget.first_month!,
+                last_modified_on: budget.last_modified_on!
+            }
+        })
+
+        createdBudgets.push(createdBudget)
     }
 };
